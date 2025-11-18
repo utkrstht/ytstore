@@ -25,6 +25,14 @@ The encoder will always output a webm ("encoded.webm") which will be deleted aft
 
 The decoder when using a youtube link, it first queries to download the video in the highest video quality available using yt-dlp, then, it queries for it's title (filename) and description (manifest), then it uses that to decode it and output the file.  
 
+### Features added/tried
+1. Different Codecs for faster encoding/decoding, This only matters for encoding, as youtube re-encodes it into it's own av1/vp9 format.  
+I tried using both vp9 and av1, as vp9 is faster to encode, but it's bigger and also slower to decode, and av1 is much much slower to encode, but smaller and faster to decode. This is unnecessary unless you're encoding a local video.
+
+2. zstd Input Compression, This is for faster encoding/decoding, as there is less information to process, We compress the input file, this really only works for text/binary files, something like an image or video won't have a big change. You can use this with --compress, but it's not recommended currently for youtube videos. 
+
+3. Diskless Pipeline, This is way too complicated for what it's worth, this is only implemented in the frame to video stage so we don't store any frames, I tried implementing this to directly upload the video to the fastapi server, but it was unnecessary, and deleting the file after uploading it had the same effect.
+
 # Disclamer and Warnings
 This is a concept, you may store your files using this at your own risk.  
 Your file *MAY* be corrupted.  
